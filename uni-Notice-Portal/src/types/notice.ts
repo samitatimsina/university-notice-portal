@@ -17,7 +17,7 @@ export interface Notice {
   updated_at?: string;
   status: "Published";
   views?: number;
-  attachments?: Attachment[];
+  attachment?: string | null;
 }
 
 export interface NoticeStats {

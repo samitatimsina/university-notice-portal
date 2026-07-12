@@ -19,6 +19,7 @@ export const Notices = async (
         priority,
         academic_level,
         category,
+        attachment,
         created_at,
         created_by
       FROM notices
@@ -56,6 +57,9 @@ if (!createdBy) {
         message: "User not authenticated"
     });
 }
+const attachment = req.file
+  ? `/uploads/notices/${req.file.filename}`
+  : null;
     const [rows] = await pool.query<ResultSetHeader>(`
       INSERT INTO notices
       (
@@ -65,9 +69,10 @@ if (!createdBy) {
       faculty,
       academic_level,
       priority,
+      attachment,
       created_by
       )
-      VALUES (?,?,?,?,?,?,?)
+      VALUES (?,?,?,?,?,?,?,?)
           `,
         [
     title,
@@ -76,6 +81,7 @@ if (!createdBy) {
     faculty,
     academic_level,
     priority,
+    attachment,
     createdBy
     
 ]
@@ -152,6 +158,7 @@ export const getNoticeById = async (
         academic_level,
         category,
         priority,
+        attachment,
         created_at,
         created_by
       FROM notices
@@ -427,12 +434,13 @@ export const getStudentNoticeById = async (
         faculty,
         academic_level,
         priority,
+        attachment,
         created_at,
         created_by
       FROM notices
       WHERE notice_id = ?
         AND faculty = ?
-     OR academic_level = ?
+     AND academic_level = ?
       `,
       [ id, user.faculty, user.academic_level]
     );
@@ -500,6 +508,7 @@ export const StudentNotices = async (
         priority,
         academic_level,
         category,
+        attachment,
         created_at,
         created_by
       FROM notices

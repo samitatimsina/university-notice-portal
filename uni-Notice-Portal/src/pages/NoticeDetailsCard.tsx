@@ -75,7 +75,7 @@ export default function NoticeDetailsCard({
           </h2>
 
           <AttachmentList
-            attachments={notice.attachments}
+            attachment={notice.attachment}
           />
 
         </section>
