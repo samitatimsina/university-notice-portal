@@ -243,7 +243,7 @@ export default function Login() {
               </label>
 
               <Link
-                to="/forgot-password"
+                to="/student/forgot-password"
                 className="text-blue-600 hover:underline text-sm"
               >
                 Forgot Password?

@@ -25,6 +25,7 @@ import AdminNoticeDetails from "./components/admin/pages/notices/AdminNoticeDeta
 import NoticeDetails from "./components/student/NoticeDetails";
 import CreateEvent from "./components/admin/pages/notices/event/CreateEvent";
 import CreateHoliday from "./components/admin/pages/notices/holiday/CreateHoliday";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   useEffect(() => {
@@ -79,7 +80,7 @@ function App() {
 
       <Route
         path="holiday"
-        element={<StudentHolidays />}
+        element={<Holidays />}
       />
       <Route
         path="holiday/create"
@@ -101,6 +102,10 @@ function App() {
       <Route
         path="home"
         element={<Home />}
+      />
+      <Route
+        path="forgot-password"
+        element={<ForgotPassword />}
       />
 
       <Route
