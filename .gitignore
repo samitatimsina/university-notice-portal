@@ -16,6 +16,7 @@ dist-ssr
 backend/.env
 .env.*
 firebase-service-account.json
+firebase-messaging-sw.js
 
 # Editor directories and files
 .vscode/*

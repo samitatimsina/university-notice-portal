@@ -25,6 +25,7 @@ import AdminNoticeDetails from "./components/admin/pages/notices/AdminNoticeDeta
 import NoticeDetails from "./components/student/NoticeDetails";
 import CreateEvent from "./components/admin/pages/notices/event/CreateEvent";
 import CreateHoliday from "./components/admin/pages/notices/holiday/CreateHoliday";
+import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   useEffect(() => {
@@ -39,6 +40,7 @@ function App() {
   <Route path="/" element={<Login />} />
   <Route path="/signup" element={<Signup />} />
   <Route path="/logout" element={<Logout />} />
+  <Route path="/profile/image" element={<Profile />} />
 
   {/* Admin */}
   <Route  element={<AdminRoute />}>
@@ -79,7 +81,7 @@ function App() {
 
       <Route
         path="holiday"
-        element={<StudentHolidays />}
+        element={<Holidays />}
       />
       <Route
         path="holiday/create"
@@ -89,6 +91,10 @@ function App() {
       <Route
         path="profile"
         element={<Profile />}
+      />
+      <Route
+        path="forgot-password"
+        element={<ForgotPassword />}
       />
 
     </Route>
@@ -101,6 +107,10 @@ function App() {
       <Route
         path="home"
         element={<Home />}
+      />
+      <Route
+        path="forgot-password"
+        element={<ForgotPassword />}
       />
 
       <Route

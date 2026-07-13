@@ -5,11 +5,29 @@ import { getAdminProfile } from "../services/profile.service";
 import type { UserProfile } from "../../types/user";
 import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../firebase/firebase";
+import ProfileImageUpload from "../ProfileImageUpload";
 
 export default function StudentProfile() {
   const [profile, setProfile] = useState<UserProfile>();
-   const logout = useAuthStore((state) => state.logout);
-   const navigate = useNavigate();
+  const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
+
+  const handleChangePassword = async () => {
+    if (!auth.currentUser?.email) {
+      alert("No user is logged in.");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, auth.currentUser.email);
+
+      alert("A password reset email has been sent to your email address.");
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
 
   async function handleLogout() {
     await logout();
@@ -37,18 +55,17 @@ export default function StudentProfile() {
     );
   }
 
-
   return (
     <div className="bg-gray-100 min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow">
           <div className="bg-blue-600 h-36 rounded-t-xl" />
-
-          <div className="-mt-14 flex justify-center">
-            <div className="h-28 w-28 rounded-full bg-white shadow flex items-center justify-center">
-              <User size={60} className="text-blue-600" />
-            </div>
-          </div>
+                <div className="-mt-14 flex justify-center">
+                  <ProfileImageUpload
+                    profileImage={profile.profile_image}
+                    onUploadSuccess={loadProfile}
+                  />
+                </div>
 
           <div className="text-center mt-4">
             <h2 className="text-2xl font-bold">{profile.name}</h2>
@@ -109,18 +126,22 @@ export default function StudentProfile() {
           </div>
 
           <div className="border-t p-6 flex justify-end gap-4">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg">
+            <button
+              onClick={handleChangePassword}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg"
+            >
               Change Password
             </button>
 
-            <button 
-            onClick={handleLogout}
-            className="bg-red-600 text-white px-6 py-2 rounded-lg">
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 text-white px-6 py-2 rounded-lg"
+            >
               Logout
             </button>
           </div>
         </div>
+         </div>
       </div>
-    </div>
   );
 }

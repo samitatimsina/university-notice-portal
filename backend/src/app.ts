@@ -8,11 +8,16 @@ import dashboardRoutes from "./routes/dashboard.routes.js";
 import noticeRoutes from "./routes/notice.route.js";
 import holidayRoutes from "./routes/holiday.routes.js";
 import eventRoutes from "./routes/event.routes.js";
+import path from "path";
 
 const app = express();
 
 app.use(cors());
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
 app.use(express.json());
 app.use(morgan("dev"));
 
@@ -22,6 +27,10 @@ app.use("/api", dashboardRoutes);
 app.use("/api", noticeRoutes);
 app.use("/api", holidayRoutes);
 app.use("/api", eventRoutes);
+app.use(
+  "/uploads",
+  express.static(path.join(process.cwd(), "uploads"))
+);
 
 app.get("/", (req, res) => {
   res.send("Server is running");
