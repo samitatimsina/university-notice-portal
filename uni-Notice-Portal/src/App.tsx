@@ -40,6 +40,7 @@ function App() {
   <Route path="/" element={<Login />} />
   <Route path="/signup" element={<Signup />} />
   <Route path="/logout" element={<Logout />} />
+  <Route path="/profile/image" element={<Profile />} />
 
   {/* Admin */}
   <Route  element={<AdminRoute />}>
@@ -90,6 +91,10 @@ function App() {
       <Route
         path="profile"
         element={<Profile />}
+      />
+      <Route
+        path="forgot-password"
+        element={<ForgotPassword />}
       />
 
     </Route>

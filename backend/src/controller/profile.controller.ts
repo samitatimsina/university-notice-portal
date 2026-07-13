@@ -19,6 +19,7 @@ export const getUserProfile = async (
         role,
         faculty,
         academic_level,
+        profile_image,
         created_at
       FROM users
       WHERE firebase_uid = ?
@@ -48,5 +49,40 @@ export const getUserProfile = async (
       message: "Failed to load profile",
     });
 
+  }
+};
+
+export const uploadProfileImage = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        message: "No image uploaded",
+      });
+    }
+
+    const firebaseUid = req.user?.uid;
+
+    await pool.query(
+      `
+      UPDATE users
+      SET profile_image=?
+      WHERE firebase_uid=?
+      `,
+      [req.file.filename, firebaseUid]
+    );
+
+    return res.json({
+      message: "Profile image updated.",
+      image: req.file.filename,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "Server Error",
+    });
   }
 };

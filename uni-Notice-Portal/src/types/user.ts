@@ -4,6 +4,7 @@ export interface UserProfile{
     email:string;
     role:string;
     faculty:string;
+    profile_image?: string | null;
     academic_level:string;
     created_at:string;
 }
