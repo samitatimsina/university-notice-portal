@@ -2,27 +2,32 @@ import { useState } from "react";
 import {
   Eye,
   EyeOff,
-  Lock,
   User,
   Bell,
   CalendarDays,
   Users,
   BookOpen,
+  Mail,
+  Phone,
+  GraduationCap,
+  Lock,
 } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { FcGoogle } from "react-icons/fc";
+
 import { auth } from "../firebase/firebase";
 import { api } from "../api/axios";
-// import { signOut } from "firebase/auth";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { FcGoogle } from "react-icons/fc";
 
 const provider = new GoogleAuthProvider();
 
 const loginWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
-
     console.log(result.user);
   } catch (err) {
     console.log(err);
@@ -30,13 +35,15 @@ const loginWithGoogle = async () => {
 };
 
 export default function Signup() {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("student");
+  const [role,setRole] = useState("student");
   const [faculty, setFaculty] = useState("");
   const [academic_level, setAcademicLevel] = useState("");
   const [phone, setPhone] = useState("");
@@ -45,10 +52,12 @@ export default function Signup() {
     const credential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
+
     const token = await credential.user.getIdToken();
-    const response = await api.post(
+
+    await api.post(
       "/signup",
       {
         name,
@@ -61,9 +70,8 @@ export default function Signup() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      },
+      }
     );
-    console.log(response.data);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -75,9 +83,8 @@ export default function Signup() {
       await register();
 
       navigate("/student/home");
-      console.log("registration successfull");
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -85,282 +92,338 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen bg-slate-100 flex">
-      <div className="hidden lg:flex w-1/2 bg-blue-400 text-white flex-col justify-center px-20 relative overflow-hidden">
+
+      {/* Left Side */}
+
+      <div className="hidden lg:flex w-1/2 relative overflow-hidden text-white">
+
         <img
           src="/uni-background.jpg"
-          alt="uni-background"
-          className="absolute inset-0 h-full w-full object-cover"
+          alt="University"
+          className="absolute inset-0 w-full h-full object-cover"
         />
 
-        {/* Optional blue overlay */}
-        <div className="absolute inset-0 bg-[#0F2B63]/75"></div>
+        <div className="absolute inset-0 bg-[#0F2B63]/80" />
 
-        {/* Content */}
-        <div className="relative z-10 mb-25">
-          {/* Logo & Heading */}
-          <div className="mb-10">
-            <div className="flex items-center gap-4 mb-4">
-              <BookOpen size={48} strokeWidth={1.8} />
+        <div className="relative z-10 flex flex-col justify-center px-16">
 
-              <h1 className="text-4xl font-bold">University Notice Portal</h1>
-            </div>
-
-            <p className="text-lg opacity-90">
-              Manage university notices, announcements, academic events and
-              notifications from one centralized platform.
-            </p>
+          <div className="flex items-center gap-4 mb-8">
+            <BookOpen size={42} />
+            <h1 className="text-4xl font-bold">
+              University Notice Portal
+            </h1>
           </div>
 
-          {/* Features */}
-          <div className="space-y-8">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <CalendarDays size={30} />
-                <h3 className="font-semibold text-2xl">Stay Updated</h3>
-              </div>
+          <p className="text-lg leading-8 text-blue-100">
+            Manage notices, academic events, holiday announcements and
+            real-time notifications from one centralized platform.
+          </p>
 
-              <p className="opacity-90 ml-11">
-                Receive important academic announcements instantly.
-              </p>
-            </div>
+          <div className="mt-12 space-y-6">
 
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <Bell size={30} />
-                <h3 className="font-semibold text-2xl">
-                  Real Time Notifications
+            <div className="flex gap-4">
+              <CalendarDays size={26} />
+              <div>
+                <h3 className="font-semibold text-xl">
+                  Stay Updated
                 </h3>
+                <p className="text-blue-100">
+                  Receive academic notices instantly.
+                </p>
               </div>
-
-              <p className="opacity-90 ml-11">Get notified instantly.</p>
             </div>
 
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <Users size={30} />
-                <h3 className="font-semibold text-2xl">Secure Access</h3>
+            <div className="flex gap-4">
+              <Bell size={26} />
+              <div>
+                <h3 className="font-semibold text-xl">
+                  Instant Notifications
+                </h3>
+                <p className="text-blue-100">
+                  Never miss important announcements.
+                </p>
               </div>
-
-              <p className="opacity-90 ml-11">
-                Login using your university credentials.
-              </p>
             </div>
+
+            <div className="flex gap-4">
+              <Users size={26} />
+              <div>
+                <h3 className="font-semibold text-xl">
+                  Secure Access
+                </h3>
+                <p className="text-blue-100">
+                  Sign in securely using Firebase Authentication.
+                </p>
+              </div>
+            </div>
+
           </div>
+
         </div>
+
       </div>
 
-      {/* Right Section */}
+      {/* Right Side */}
 
-      <div className="flex-1 flex justify-center items-center">
-        <div className="bg-white shadow-xl rounded-2xl w-full max-w-md p-5">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold">Create New User!!</h2>
+      <div className="flex-1 flex justify-center items-center px-6 py-4">
 
-            <p className="text-gray-500 mt-1">Sign up to continue</p>
+        <div className="bg-white shadow-xl rounded-2xl w-full max-w-xl px-8 py-6">
+
+          <div className="text-center mb-5">
+
+            <h2 className="text-3xl font-bold">
+              Create Account
+            </h2>
+
+            <p className="text-gray-500 mt-1">
+              Sign up to continue
+            </p>
+
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="text-sm font-medium">Full Name</label>
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-3"
+          >
+            {/* Full Name */}
 
-              <div className="mt-2 flex items-center border rounded-lg px-3">
-                <User size={18} className="text-gray-400" />
+<div>
+  <label className="text-sm font-medium">Full Name</label>
 
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your full name"
-                  className="w-full p-1 outline-none"
-                  required
-                />
-              </div>
-            </div>
+  <div className="mt-1 flex items-center border rounded-lg px-3 py-2">
+    <User size={18} className="text-gray-400 mr-2" />
 
-            <div className="flex gap-4 w-full">
-              <div className="flex flex-col w-full">
-                <label className="text-sm font-medium mb-2">Role</label>
+    <input
+      type="text"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      placeholder="Enter your full name"
+      className="w-full outline-none"
+      required
+    />
+  </div>
+</div>
 
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="border rounded-lg p-1"
-                  required
-                >
-                  <option value="student">Student</option>
-                </select>
-              </div>
+{/* Role & Faculty */}
 
-              <div className="flex flex-col w-full">
-                <label className="text-sm font-medium mb-2">Faculty</label>
+<div className="grid grid-cols-2 gap-4">
 
-                <select
-                  value={faculty}
-                  onChange={(e) => setFaculty(e.target.value)}
-                  className="border rounded-lg p-1"
-                >
-                  <option value="Select">Select</option>
-                  <option value="bsccsit">BSc CSIT</option>
-                  <option value="bca">BCA</option>
-                  <option value="bim">BIM</option>
-                  <option value="bsc">BSc</option>
-                  <option value="bbs">BBS</option>
-                  <option value="bba">BBA</option>
-                </select>
-              </div>
-            </div>
+  <div>
+    <label className="text-sm font-medium">Role</label>
 
-            {faculty === "bbs" || faculty === "bba" ? (
-              <div>
-                <label className="text-sm font-medium">Year</label>
+    <div className="mt-1 flex items-center border rounded-lg px-3 py-2 bg-gray-50">
+      <Users size={18} className="text-gray-400 mr-2" />
 
-                <select
-                  value={academic_level}
-                  onChange={(e) => setAcademicLevel(e.target.value)}
-                  className="mt-2 w-full border rounded-lg p-3"
-                >
-                  <option value="">Select Year</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </select>
-              </div>
-            ) : (
-              <div>
-                <label className="text-sm font-medium">Semester</label>
-
-                <select
-                  value={academic_level}
-                  onChange={(e) => setAcademicLevel(e.target.value)}
-                  className="mt-2 w-full border rounded-lg p-3"
-                >
-                  <option value="">Select Semester</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                </select>
-              </div>
-            )}
-
-            <div>
-              <label className="text-sm font-medium">Phone</label>
-
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="98XXXXXXXX"
-                className="w-full border rounded-lg p-1 mt-2"
-                required
-              />
-            </div>
-
-            {/* Username */}
-
-            <div>
-              <label className="text-sm font-medium">Email</label>
-
-              <div className="mt-2 flex items-center border rounded-lg px-1">
-                <User size={18} className="text-gray-400" />
-
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full p-1 outline-none"
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-
-            <div>
-              <label className="text-sm font-medium">Password</label>
-
-              <div className="mt-2 flex items-center border rounded-lg px-1">
-                {/* <Lock size={18} className="text-gray-400" /> */}
-
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-1 outline-none"
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
-            </div>
-
-            {/* Remember */}
-
-            <div className="flex justify-between items-center">
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" />
-                Remember me
-              </label>
-
-              <button
-                type="button"
-                className="text-blue-600 hover:underline text-sm"
-              >
-                <Link
-                  to="/forgot-password"
-                  className="text-blue-600 hover:underline"
-                >
-                  Forgot Password?
-                </Link>
-              </button>
-            </div>
-
-            {/* signup */}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-700 text-white p-3 rounded-lg hover:bg-blue-800 transition"
-            >
-              {loading ? "Signing In..." : "Sign Up"}
-            </button>
-
-            <div className="text-center text-sm">
-              <h3 className="text-lg font-semibold text-black">OR</h3>
-              <button
-                onClick={loginWithGoogle}
-                className="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-lg px-4 py-3 hover:bg-gray-50"
-              >
-                <FcGoogle size={22} />
-                Continue with Google
-              </button>
-              <div>
-              <span className="text-gray-600">Don't have an account? </span>
-              <Link
-                to="/"
-                className="text-blue-600 font-medium hover:underline"
-              >
-                Sign In
-              </Link>
-              </div>
-            </div>
-          </form>
-
-          <div className="text-center mt-8 text-gray-500 text-sm">
-            © 2026 University Notice Portal
-          </div>
-        </div>
-      </div>
+       <select
+        value={faculty}
+        onChange={(e) => setFaculty(e.target.value)}
+        className="w-full outline-none bg-transparent"
+        required
+      >
+        <option value="student">Student</option>
+        </select>
     </div>
-  );
+  </div>
+
+  <div>
+    <label className="text-sm font-medium">Faculty</label>
+
+    <div className="mt-1 flex items-center border rounded-lg px-3">
+      <GraduationCap size={18} className="text-gray-400 mr-2" />
+
+      <select
+        value={faculty}
+        onChange={(e) => setFaculty(e.target.value)}
+        className="w-full py-2 outline-none bg-transparent"
+        required
+      >
+        <option value="">Select Faculty</option>
+        <option value="bsccsit">BSc CSIT</option>
+        <option value="bca">BCA</option>
+        <option value="bim">BIM</option>
+        <option value="bsc">BSc</option>
+        <option value="bbs">BBS</option>
+        <option value="bba">BBA</option>
+      </select>
+    </div>
+  </div>
+
+</div>
+
+{/* Semester & Phone */}
+
+<div className="grid grid-cols-2 gap-4">
+
+  <div>
+    <label className="text-sm font-medium">
+      {faculty === "bbs" || faculty === "bba"
+        ? "Year"
+        : "Semester"}
+    </label>
+
+    <select
+      value={academic_level}
+      onChange={(e) => setAcademicLevel(e.target.value)}
+      className="mt-1 w-full border rounded-lg px-3 py-2 outline-none"
+      required
+    >
+      <option value="">
+        {faculty === "bbs" || faculty === "bba"
+          ? "Select Year"
+          : "Select Semester"}
+      </option>
+
+      {(faculty === "bbs" || faculty === "bba"
+        ? [1, 2, 3, 4]
+        : [1, 2, 3, 4, 5, 6, 7, 8]
+      ).map((num) => (
+        <option key={num} value={num}>
+          {num}
+        </option>
+      ))}
+    </select>
+  </div>
+  <div>
+    <label className="text-sm font-medium">Phone</label>
+
+    <div className="mt-1 flex items-center border rounded-lg px-3 py-2">
+
+      <Phone size={18} className="text-gray-400 mr-2" />
+
+      <input
+        type="tel"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        placeholder="98XXXXXXXX"
+        className="w-full outline-none"
+        required
+      />
+
+    </div>
+  </div>
+  </div>
+  
+{/*  Email & Password */}
+
+<div className="grid grid-cols-2 gap-4">
+
+  <div>
+    <label className="text-sm font-medium">Email</label>
+
+    <div className="mt-1 flex items-center border rounded-lg px-3 py-2">
+
+      <Mail size={18} className="text-gray-400 mr-2" />
+
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+        className="w-full outline-none"
+        required
+      />
+
+    </div>
+  </div>
+
+  <div>
+    <label className="text-sm font-medium">Password</label>
+
+    <div className="mt-1 flex items-center border rounded-lg px-3 py-2">
+
+      <Lock size={18} className="text-gray-400 mr-2" />
+
+      <input
+        type={showPassword ? "text" : "password"}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        className="w-full outline-none"
+        required
+      />
+
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+      >
+        {showPassword ? (
+          <EyeOff size={18} />
+        ) : (
+          <Eye size={18} />
+        )}
+      </button>
+
+    </div>
+  </div>
+
+</div>
+
+<div className="flex items-center">
+  <label className="flex items-center gap-2 text-sm text-gray-600">
+    <input type="checkbox" />
+    Remember me
+  </label>
+</div>
+
+{/* Submit Button */}
+
+<button
+  type="submit"
+  disabled={loading}
+  className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 rounded-lg transition disabled:opacity-60 disabled:cursor-not-allowed"
+>
+  {loading ? "Creating Account..." : "Create Account"}
+</button>
+
+{/* OR Divider */}
+
+<div className="flex items-center gap-3">
+  <div className="flex-1 h-px bg-gray-300"></div>
+
+  <span className="text-sm text-gray-500 font-medium">
+    OR
+  </span>
+
+  <div className="flex-1 h-px bg-gray-300"></div>
+</div>
+
+{/* Google Sign In */}
+
+<button
+  type="button"
+  onClick={loginWithGoogle}
+  className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-2.5 hover:bg-gray-50 transition"
+>
+  <FcGoogle size={22} />
+
+  <span className="font-medium">
+    Continue with Google
+  </span>
+</button>
+
+{/* Sign In */}
+
+<div className="text-center text-sm">
+  <span className="text-gray-600">
+    Already have an account?{" "}
+  </span>
+
+  <Link
+    to="/"
+    className="text-blue-700 font-semibold hover:underline"
+  >
+    Sign In
+  </Link>
+</div>
+
+</form>
+
+<div className="text-center text-xs text-gray-500 mt-5">
+  © 2026 University Notice Portal
+</div>
+
+</div>
+</div>
+</div>
+);
 }
