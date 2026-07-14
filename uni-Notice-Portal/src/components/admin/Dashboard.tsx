@@ -310,7 +310,7 @@ useEffect(() => {
           </h3>
 
           <p className="text-sm opacity-90 mt-1">
-            Create and edit notices.
+            Create and delete notices.
           </p>
 
         </Link>
