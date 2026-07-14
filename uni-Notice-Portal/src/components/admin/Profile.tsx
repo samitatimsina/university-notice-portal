@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { User, Mail, GraduationCap, ShieldCheck, Calendar } from "lucide-react";
 
 import { getAdminProfile } from "../services/profile.service";
 import type { UserProfile } from "../../types/user";
 import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
-import { sendPasswordResetEmail } from "firebase/auth";
+import { onAuthStateChanged, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
 import ProfileImageUpload from "../ProfileImageUpload";
 
@@ -43,9 +43,11 @@ export default function StudentProfile() {
     }
   }
 
-  useEffect(() => {
+onAuthStateChanged(auth, (user) => {
+  if (user) {
     loadProfile();
-  }, []);
+  }
+});
 
   if (!profile) {
     return (
