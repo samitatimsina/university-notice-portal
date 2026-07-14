@@ -117,13 +117,10 @@ async function handleDelete(id: number) {
                     {new Date(notice.created_at).toLocaleDateString()}
                   </td>
                   <td className="p-4 border-t gap-2">
-                    <button className="bg-blue-600 p-2 mr-2 rounded-lg text-white">
-                      Edit
-                    </button>
 
                     <button 
                     onClick={() => handleDelete(notice.notice_id)}
-                    className="bg-red-600 rounded-lg mr-2 p-2 ">
+                    className="bg-red-600 rounded-lg mr-2 p-2 text-white ">
                       Delete
                     </button>
                     <button className="bg-amber-200 rounded-lg text-black mr-2 p-2 "

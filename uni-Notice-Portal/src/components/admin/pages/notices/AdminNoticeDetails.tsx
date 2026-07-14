@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   LoaderCircle,
-  Pencil,
   Trash2
 } from "lucide-react";
 
@@ -77,12 +76,6 @@ export default function AdminNoticeDetails() {
     navigate("/admin/notices");
   }
 
-  // async function handleRepublish() {
-
-  //   await resendNotification(id!);
-
-  //   alert("Notification Sent.");
-  // }
 
   if (loading)
     return (
@@ -143,21 +136,6 @@ export default function AdminNoticeDetails() {
         <div className="border-t p-6 bg-white flex gap-3">
 
           <button
-            onClick={() =>
-              navigate(
-                `/admin/notices/edit/${notice.notice_id}`
-              )
-            }
-            className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg"
-          >
-
-            <Pencil size={18} />
-
-            Edit
-
-          </button>
-
-          <button
             onClick={handleDelete}
             className="flex items-center gap-2 bg-red-600 text-white px-5 py-2 rounded-lg"
           >
@@ -167,17 +145,6 @@ export default function AdminNoticeDetails() {
             Delete
 
           </button>
-
-          {/* <button
-            onClick={handleRepublish}
-            className="flex items-center gap-2 bg-green-600 text-white px-5 py-2 rounded-lg"
-          >
-
-            <Send size={18} />
-
-            Republish
-
-          </button> */}
 
         </div>
 

@@ -59,7 +59,7 @@ export default function StudentProfile() {
     <div className="bg-gray-100 min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow">
-          <div className="bg-blue-600 h-36 rounded-t-xl" />
+          <div className="bg-sky-800 h-36 rounded-t-xl" />
                 <div className="-mt-14 flex justify-center">
                   <ProfileImageUpload
                     profileImage={profile.profile_image}
@@ -128,7 +128,7 @@ export default function StudentProfile() {
           <div className="border-t p-6 flex justify-end gap-4">
             <button
               onClick={handleChangePassword}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg"
+              className="bg-sky-600 text-white px-6 py-2 rounded-lg"
             >
               Change Password
             </button>

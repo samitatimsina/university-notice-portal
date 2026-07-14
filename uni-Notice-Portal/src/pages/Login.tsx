@@ -10,7 +10,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { browserLocalPersistence, browserSessionPersistence, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { api } from "../api/axios";
 
@@ -44,6 +44,20 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+
+  if (rememberMe) {
+     setPersistence(
+        auth,
+        browserLocalPersistence
+    );
+}
+else {
+     setPersistence(
+        auth,
+        browserSessionPersistence
+    );
+}
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -238,7 +252,11 @@ export default function Login() {
 
             <div className="flex justify-between items-center">
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" />
+                <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e)=>setRememberMe(e.target.checked)}
+                />
                 Remember me
               </label>
 
