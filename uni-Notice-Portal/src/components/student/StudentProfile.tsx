@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User, Mail, GraduationCap, ShieldCheck, Calendar } from "lucide-react";
 
 import { getStudentProfile } from "../services/profile.service";
@@ -43,11 +43,15 @@ export default function StudentProfile() {
     }
   }
 
-  onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loadProfile();
-  }
-});
+  useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loadProfile();
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
 
   if (!profile) {
     return (
