@@ -24,14 +24,6 @@ export const deleteNotice = async (
   return api.delete(`/admin/notices/${id}`);
 };
 
-// export const resendNotification = async (
-//   id: string
-// ) => {
-//   return api.post(
-//     `/admin/notices/${id}/resend`
-//   );
-// };
-
 export const getStudentNoticeById = async (
   id: string
 ): Promise<Notice> => {

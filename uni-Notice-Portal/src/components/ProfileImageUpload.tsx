@@ -51,7 +51,7 @@ export default function ProfileImageUpload({
             />
           ) : profileImage ? (
             <img
-              src={`http://localhost:5000/uploads/profiles/${profileImage}`}
+              src={`https://university-notice-portal.onrender.com/uploads/profiles/${profileImage}`}
               alt="Profile"
               className="w-full h-full object-cover"
             />
