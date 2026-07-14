@@ -43,7 +43,7 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role,setRole] = useState("student");
+  const [role] = useState("student");
   const [faculty, setFaculty] = useState("");
   const [academic_level, setAcademicLevel] = useState("");
   const [phone, setPhone] = useState("");
