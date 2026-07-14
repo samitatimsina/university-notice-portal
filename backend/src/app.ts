@@ -16,7 +16,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://university-notice-portal.vercel.app/",
+      "https://university-notice-portal.vercel.app",
     ],
     credentials: true,
   })
