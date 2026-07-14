@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAuth } from "firebase/auth";
 
 export const api = axios.create({
-  baseURL: "https://university-notice-portal.onrender.com/api",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
 });
 
 api.interceptors.request.use(async (config) => {
