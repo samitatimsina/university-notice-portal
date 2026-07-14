@@ -30,19 +30,19 @@ self.addEventListener("notificationclick", (event) => {
 
   const data = event.notification.data || {};
 
-  let url = "http://localhost:5173/student/home";
+  let url = "https://university-notice-portal.vercel.app/student/home";
 
   switch (data.type) {
     case "notice":
-      url = `http://localhost:5173/student/notices/${data.id}`;
+      url = `https://university-notice-portal.vercel.app/student/notices/${data.id}`;
       break;
 
     case "event":
-      url = `http://localhost:5173/student/event/${data.id}`;
+      url = `https://university-notice-portal.vercel.app/student/event/${data.id}`;
       break;
 
     case "holiday":
-      url = `http://localhost:5173/student/holiday/${data.id}`;
+      url = `https://university-notice-portal.vercel.app/student/holiday/${data.id}`;
       break;
   }
 

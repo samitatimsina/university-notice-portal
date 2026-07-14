@@ -13,7 +13,7 @@ export default function AttachmentList({
 
   return (
     <a
-      href={`https://university-notice-portal.onrender.com${attachment}`}
+      href={`https://university-notice-portal.vercel.app${attachment}`}
       target="_blank"
       rel="noreferrer"
       className="flex items-center gap-2 border rounded-lg p-3 hover:bg-gray-100"

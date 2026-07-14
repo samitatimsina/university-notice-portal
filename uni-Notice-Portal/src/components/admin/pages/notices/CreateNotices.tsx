@@ -11,6 +11,7 @@ export default function CreateNotice() {
   const [category, setCategory] = useState("");
   const [academic_level, setAcademicLevel] = useState("");
   const [priority, setPriority] = useState("Normal");
+  const [attachment, setAttachment] = useState<File | null>(null);
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,22 +37,24 @@ export default function CreateNotice() {
       const token = await auth.currentUser?.getIdToken();
       console.log("Tokens:", token);
 
-      await api.post(
-        "/admin/notices/create",
-        {
-          title,
-          description,
-          category,
-          faculty,
-          academic_level,
-          priority,
-        },
-        {
+      const formData = new FormData();
+
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("category", category);
+        formData.append("faculty", faculty);
+        formData.append("academic_level", academic_level);
+        formData.append("priority", priority);
+
+        if (attachment) {
+          formData.append("attachment", attachment);
+        }
+
+        await api.post("/admin/notices/create", formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
-      );
+        });
 
       await Swal.fire({
         icon: "success",
@@ -197,6 +200,25 @@ export default function CreateNotice() {
             <option>Urgent</option>
           </select>
         </div>
+
+            <div>
+            <label className="font-medium">Attachment (Optional)</label>
+
+            <input
+              type="file"
+              onChange={(e) =>
+                setAttachment(e.target.files ? e.target.files[0] : null)
+              }
+              className="mt-2 w-full border rounded-lg p-3"
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+            />
+
+            {attachment && (
+              <p className="text-sm text-gray-600 mt-2">
+                Selected: {attachment.name}
+              </p>
+            )}
+          </div>
 
         <div className="flex justify-end">
           <button
