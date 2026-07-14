@@ -96,7 +96,6 @@ async function loadNotice() {
         navigate("/student/notices")
     }
 >
-    Read More
 </button>
 
       </div>
